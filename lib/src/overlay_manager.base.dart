@@ -9,14 +9,16 @@ import 'package:overlay_manager/src/models/overlay_mode.dart';
 
 import 'models/overlay_manager_entry.dart';
 
-/// List overlay entries with be add manage by [OverlayManager]
-/// you can split it to manage a group of entries
+/// Overlays can be grouped and managed by an OverlayManager.
+// [show]  creates and automatically adds into managers.
+// The Overlay can be closed by [OverlayManagerEntry.close] or automatically closed by [pop], [closeAll].
 abstract class OverlayManager {
   final GlobalKey<NavigatorState>? navigatorKey;
 
   final BuildContext? context;
 
-  /// Can be use [OverlayManager] with [GlobalKey<NavigatorState>] or [BuildContext]
+  /// OverlayManager can be used with [GlobalKey<NavigatorState>] or [BuildContext].
+  /// One and only one in [navigatorKey] or [context] is special.
   const OverlayManager({
     this.navigatorKey,
     this.context,
@@ -26,19 +28,25 @@ abstract class OverlayManager {
   // void rearrange(Iterable<OverlayManager> orderedList);
 
   ///
-  /// return number of entries this manager manage
+  /// The number of entries in this manager.
   int get count;
 
-  /// dismiss a special [entry] or [topEntry] with value
+  /// Close a special [entry] or [topEntry] with  a [value] for [onDismiss].
   void pop<T>([OverlayManagerEntry? entry, T? value]);
 
-  /// dismiss all entries in this manager
+  /// Close all entries in this manager.
   void closeAll();
 
-  /// return top of entry in this manager
+  /// The top entry in this manager, null if this entries list in the manager is empty.
   OverlayManagerEntry? get topEntry;
 
-  /// build and show overlay entry in [builder]
+  /// Every time [show] is called, an overlay will be created and displayed on the screen with [elevation].
+  /// The widget will be taken from [builder].
+  /// If [mode] is equal to [OverlayMode.opaque], [barrierColor] will be applied.
+  /// [onDismiss] is called when the overlay is closed.
+  /// [isDismissible] equals true to close the overlay automatically.
+  /// Note that the overlay cannot be closed by out click if [mode] is different from [OverlayMode.opaque],
+  /// then the widgets below are touchable.
   OverlayManagerEntry<T> show<T>({
     required OverlayBuilder builder,
     bool isDismissible = true,

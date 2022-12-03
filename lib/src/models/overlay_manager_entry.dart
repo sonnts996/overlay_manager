@@ -6,7 +6,9 @@
 import '../overlay_manager.base.dart';
 import 'functions.dart';
 
-/// Every overlay will be manage by an entry.
+///
+/// Every overlay is provided an [OverlayManagerEntry].
+/// Check the state of overlay by [closed] flag and close it by [close] method.
 abstract class OverlayManagerEntry<T> extends Comparable {
   OverlayManagerEntry({
     required this.manager,
@@ -15,23 +17,23 @@ abstract class OverlayManagerEntry<T> extends Comparable {
     this.elevation = 0,
   });
 
-  /// Manager of this entry
+  ///  The [OverlayManager] manages this overlay.
   final OverlayManager manager;
-  /// call when overlay is dismissed;
+
+  /// Used for internal! Will call when overlay is closed.
   final OverlayDismiss<T>? onDismiss;
 
-  /// [true] is overlay can be dismissed when out click,
-  /// it will be ignore in [OverlayMode.transparent] or [OverlayMode.unknown]
+  /// Used for internal! [isDismissible] is true if the overlay can be close automatically.
   final bool isDismissible;
 
-  /// Elevation of entry on screen
+  /// In development, the [elevation] provides layer position of this overlay in manage
   final double elevation;
 
-  /// [true] if entry is dismissed
+  /// [closed] is true if this overlay is closed.
+  /// each overlay can be shown only one time and can not be reused if it is closed
   bool get closed;
 
-  /// close the entry
-  /// [value] will be return on [onDismiss] function
+  /// close this overlay if [closed] is false and return T [value] for [onDismiss]
   void close(T? value);
 
   @override

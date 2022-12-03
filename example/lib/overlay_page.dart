@@ -4,7 +4,6 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:overlay_manager/overlay_manager.dart';
 
 class OverlayPage extends StatefulWidget {

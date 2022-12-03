@@ -8,13 +8,14 @@ import 'package:flutter/widgets.dart';
 import 'overlay_manager_entry.dart';
 
 ///
-/// return overlay widget with entry manager
+/// OverlayBuilder returns the overlay a widget to display on the screen,
+/// with [context] and an OverlayManagerEntry [entry] to manage the overlay.
 typedef OverlayBuilder = Widget Function(
   BuildContext context,
   OverlayManagerEntry entry,
 );
 
 ///
-/// Call on overlay dismissed
-/// entry.close(T) for result
+/// OverlayDismiss is a callback, it is called when overlay is closed and returns a T [result],
+/// the [result] may be null when overlay is closed automated by out click or manager.pop
 typedef OverlayDismiss<T> = void Function(T? result);

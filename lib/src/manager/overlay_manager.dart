@@ -169,6 +169,10 @@ abstract class _OverlayManager extends OverlayManager {
 // }
 }
 
+///
+/// Create Manager with GlobalKey<NavigatorState> [navigatorKey],
+/// commonly used for global managers.
+/// Note that each Manager is independent even though it has the same [navigatorKey].
 class GlobalOverlayManager extends _OverlayManager {
   GlobalOverlayManager({required GlobalKey<NavigatorState> navigatorKey})
       : super(navigatorKey: navigatorKey);
@@ -179,6 +183,10 @@ class GlobalOverlayManager extends _OverlayManager {
   }
 }
 
+///
+/// Create Manager with BuildContext [context],
+/// commonly used for one or a small page group managers.
+/// Note that each Manager is independent even though it has the same [context].
 class ContextOverlayManager extends _OverlayManager {
   ContextOverlayManager({required BuildContext context})
       : super(context: context);

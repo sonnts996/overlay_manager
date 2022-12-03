@@ -3,16 +3,14 @@
  Copyright (c) 2022 . All rights reserved.
 */
 enum OverlayMode {
-  /// Overlay entry will have barrier and can be dismissed when out click
+  /// Overlay entry will have a barrier and can be closed when out click.
   opaque,
 
-  /// Overlay entry will not have barrier and can not be dismissed when out click
-  /// Below widget can be touch
-  /// The overlay will have Material
+  /// Overlay entry will not have any barrier and can not be dismissed when out click.
+  /// The below widget can be touched but the overlay widget also has a [Material] as parents.
   transparent,
 
-  /// Overlay entry will not have barrier and can not be dismissed when out click
-  /// Below widget can be touch
-  /// The overlay will not have Material
+  /// Overlay entry will not have any barrier and can not be dismissed when out click.
+  /// The below widget can be touched and The overlay will not have any [Material] cover.
   unknown
 }

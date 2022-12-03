@@ -6,9 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:overlay_manager/overlay_manager.dart';
 
 ///
-/// Overlay in [manager] will be dismissed when pop back
-/// if [onOverlayPop] is special, pop back stack will be process in [onOverlayPop]
-/// if [onOverlayPop] return true, [onWillPop] will return true
+/// The first overlay in [manager] will be dismissed when [onBackPressed] or [maybePop] with [onOverlayPop] is null.
+/// if [onOverlayPop] is special, the behavior will be processed in [onOverlayPop]
+/// if [onOverlayPop] returns true, [onWillPop] will return true, and otherwise false.
 class OverlayPopScope extends StatelessWidget {
   const OverlayPopScope({
     Key? key,

@@ -1,7 +1,7 @@
 name: overlay_manager
-description: Manager of overlay context.
+description: Group and manage easily flutter overlays.
 version: 0.0.1
-homepage:
+homepage: https://github.com/sonnts996/overlay_manager
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:
