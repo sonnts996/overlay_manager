@@ -87,7 +87,8 @@ abstract class _OverlayManager extends OverlayManager {
     final _entry = _OverlayManagerEntry<T>(
         manager: this,
         onDismiss: onDismiss,
-        isDismissible: isDismissible, elevation: elevation);
+        isDismissible: isDismissible,
+        elevation: elevation);
     _entry._overlay = _create<T>(
       builder: builder,
       entry: _entry,
@@ -114,7 +115,8 @@ abstract class _OverlayManager extends OverlayManager {
       } else {
         int index = _entries.indexOf(above);
         _entries.insert(index, _entry);
-        _overlay.insert(_entry._overlay, above: (above as _OverlayManagerEntry)._overlay);
+        _overlay.insert(_entry._overlay,
+            above: (above as _OverlayManagerEntry)._overlay);
       }
     }
     return _entry;
@@ -123,7 +125,8 @@ abstract class _OverlayManager extends OverlayManager {
   @override
   void rearrange() {
     _entries.sort((a, b) => a.compareTo(b));
-    final newEntries = _entries.map((e) => (e as _OverlayManagerEntry)._overlay);
+    final newEntries =
+        _entries.map((e) => (e as _OverlayManagerEntry)._overlay);
     _overlay.rearrange(newEntries, below: newEntries.first);
   }
 
@@ -158,7 +161,9 @@ abstract class _OverlayManager extends OverlayManager {
       return OverlayEntry(
         opaque: false,
         maintainState: true,
-        builder: (context) => Material(type: MaterialType.transparency, child: builder.call(context, entry)),
+        builder: (context) => Material(
+            type: MaterialType.transparency,
+            child: builder.call(context, entry)),
       );
     } else {
       return OverlayEntry(

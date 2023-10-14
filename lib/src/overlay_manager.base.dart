@@ -56,6 +56,6 @@ abstract class OverlayManager {
     OverlayDismiss<T>? onDismiss,
     Color barrierColor = Colors.black45,
     OverlayMode mode = OverlayMode.opaque,
-    // double elevation = 0,
+    double elevation = 0,
   });
 }

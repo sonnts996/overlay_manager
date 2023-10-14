@@ -27,6 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> showOverlay(int id) async {
     manager.show(
       mode: OverlayMode.transparent,
+      elevation: -1.0 * id,
       builder: (context, entry) {
         return Bubble(
           id: id,
@@ -116,7 +117,10 @@ class _BubbleState extends State<Bubble> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.white,
-                    boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 6)]),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12, blurRadius: 6, spreadRadius: 6)
+                    ]),
                 child: Center(
                   child: Text("Drag $_id"),
                 ),
@@ -131,7 +135,10 @@ class _BubbleState extends State<Bubble> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.white38,
-                    boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 6)]),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12, blurRadius: 6, spreadRadius: 6)
+                    ]),
                 width: width,
                 height: height,
               ),
