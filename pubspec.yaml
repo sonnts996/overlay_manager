@@ -1,11 +1,11 @@
 name: overlay_manager
-description: Group and manage easily flutter overlays.
-version: 0.0.1
+description: "Group and manage easily flutter overlays: Create a new overlay, arrange it in z-index order, check, close, and capture the return value when closed."
+version: 0.0.2
 homepage: https://github.com/sonnts996/overlay_manager
 
 environment:
-  sdk: ">=2.16.1 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: '>=2.16.1 <4.0.0'
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:

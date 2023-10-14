@@ -21,7 +21,7 @@ class _OverlayPageState extends State<OverlayPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _manager = ContextOverlayManager(context: context);
     });
   }

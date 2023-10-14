@@ -26,7 +26,7 @@ class _OverlayManagerEntry<T> extends OverlayManagerEntry<T> {
   bool get closed => _closed;
 
   @override
-  void close(T? value) {
+  void close([T? value]) {
     if (!closed) {
       _overlay.remove();
       (manager as _OverlayManager)._remove(this);
@@ -77,7 +77,7 @@ abstract class _OverlayManager extends OverlayManager {
 
   @override
   OverlayManagerEntry<T> show<T>({
-    required OverlayBuilder builder,
+    required OverlayBuilder<T> builder,
     bool isDismissible = true,
     OverlayDismiss<T>? onDismiss,
     Color barrierColor = Colors.black45,
@@ -87,9 +87,8 @@ abstract class _OverlayManager extends OverlayManager {
     final _entry = _OverlayManagerEntry<T>(
         manager: this,
         onDismiss: onDismiss,
-        isDismissible: isDismissible,
-        elevation: elevation);
-    _entry._overlay = _create(
+        isDismissible: isDismissible, elevation: elevation);
+    _entry._overlay = _create<T>(
       builder: builder,
       entry: _entry,
       onDismiss: onDismiss,
@@ -98,23 +97,39 @@ abstract class _OverlayManager extends OverlayManager {
       mode: mode,
     );
 
-    _entries.add(_entry);
-    _entries.sort((a, b) => a.compareTo(b));
+    if (_entries.length == 1) {
+      _entries.add(_entry);
+      _overlay.insert(_entry._overlay);
+    } else {
+      OverlayManagerEntry? above;
+      try {
+        above = _entries.firstWhere((element) => element.elevation > elevation);
+      } catch (e) {
+        above = null;
+      }
 
-    _overlay.insert(
-      _entry._overlay,
-    );
-
-    // _overlay.rearrange(
-    //   _entries.map((e) => (e as _OverlayManagerEntry)._overlay),
-    // );
-
+      if (above == null) {
+        _entries.add(_entry);
+        _overlay.insert(_entry._overlay);
+      } else {
+        int index = _entries.indexOf(above);
+        _entries.insert(index, _entry);
+        _overlay.insert(_entry._overlay, above: (above as _OverlayManagerEntry)._overlay);
+      }
+    }
     return _entry;
   }
 
+  @override
+  void rearrange() {
+    _entries.sort((a, b) => a.compareTo(b));
+    final newEntries = _entries.map((e) => (e as _OverlayManagerEntry)._overlay);
+    _overlay.rearrange(newEntries, below: newEntries.first);
+  }
+
   OverlayEntry _create<T>({
-    required OverlayBuilder builder,
-    required OverlayManagerEntry entry,
+    required OverlayBuilder<T> builder,
+    required OverlayManagerEntry<T> entry,
     bool isDismissible = true,
     OverlayDismiss<T>? onDismiss,
     Color barrierColor = Colors.black45,
@@ -126,6 +141,7 @@ abstract class _OverlayManager extends OverlayManager {
       }
       return OverlayEntry(
         opaque: false,
+        maintainState: true,
         builder: (context) => GestureDetector(
           behavior: HitTestBehavior.deferToChild,
           onTap: !isDismissible ? null : () => entry.close(null),
@@ -141,13 +157,13 @@ abstract class _OverlayManager extends OverlayManager {
     } else if (mode == OverlayMode.transparent) {
       return OverlayEntry(
         opaque: false,
-        builder: (context) => Material(
-            type: MaterialType.transparency,
-            child: builder.call(context, entry)),
+        maintainState: true,
+        builder: (context) => Material(type: MaterialType.transparency, child: builder.call(context, entry)),
       );
     } else {
       return OverlayEntry(
         opaque: false,
+        maintainState: true,
         builder: (context) => builder.call(context, entry),
       );
     }
@@ -193,6 +209,6 @@ class ContextOverlayManager extends _OverlayManager {
 
   @override
   OverlayState get _overlay {
-    return Overlay.of(context!)!;
+    return Overlay.of(context!);
   }
 }

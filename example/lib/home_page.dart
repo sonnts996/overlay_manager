@@ -24,6 +24,20 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  Future<void> showOverlay(int id) async {
+    manager.show(
+      mode: OverlayMode.transparent,
+      builder: (context, entry) {
+        return Bubble(
+          id: id,
+          moveToTop: () {
+            entry.rearrange((manager.topEntry?.elevation ?? 0) + 1);
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,15 +51,11 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               ElevatedButton(
                   onPressed: () {
-                    manager.show(
-                      mode: OverlayMode.transparent,
-                      builder: (context, entry) {
-                        count++;
-                        return Bubble(id: count);
-                      },
-                    );
+                    count++;
+                    showOverlay(count);
                   },
                   child: const Text('Show Overlay')),
+              const SizedBox(height: 8),
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -66,9 +76,11 @@ class Bubble extends StatefulWidget {
   const Bubble({
     Key? key,
     required this.id,
+    required this.moveToTop,
   }) : super(key: key);
 
   final int id;
+  final void Function() moveToTop;
 
   @override
   State<StatefulWidget> createState() {
@@ -97,22 +109,29 @@ class _BubbleState extends State<Bubble> {
           top: position.dy - height + 20,
           child: Draggable(
             child: GestureDetector(
-              onTap: () => print('pressed'),
+              onDoubleTap: widget.moveToTop,
               child: Container(
                 width: width,
                 height: height,
-                color: Colors.blue,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.white,
+                    boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 6)]),
                 child: Center(
                   child: Text("Drag $_id"),
                 ),
               ),
             ),
             feedback: Material(
+              color: Colors.transparent,
               child: Container(
                 child: Center(
                   child: Text("Drag $_id"),
                 ),
-                color: Colors.red[800],
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.white38,
+                    boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6, spreadRadius: 6)]),
                 width: width,
                 height: height,
               ),

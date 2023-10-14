@@ -10,9 +10,9 @@ import 'overlay_manager_entry.dart';
 ///
 /// OverlayBuilder returns the overlay a widget to display on the screen,
 /// with [context] and an OverlayManagerEntry [entry] to manage the overlay.
-typedef OverlayBuilder = Widget Function(
+typedef OverlayBuilder<T> = Widget Function(
   BuildContext context,
-  OverlayManagerEntry entry,
+  OverlayManagerEntry<T> entry,
 );
 
 ///

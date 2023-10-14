@@ -40,6 +40,9 @@ abstract class OverlayManager {
   /// The top entry in this manager, null if this entries list in the manager is empty.
   OverlayManagerEntry? get topEntry;
 
+  /// Rearrange the entries in this manager by elevation
+  void rearrange();
+
   /// Every time [show] is called, an overlay will be created and displayed on the screen with [elevation].
   /// The widget will be taken from [builder].
   /// If [mode] is equal to [OverlayMode.opaque], [barrierColor] will be applied.
@@ -48,7 +51,7 @@ abstract class OverlayManager {
   /// Note that the overlay cannot be closed by out click if [mode] is different from [OverlayMode.opaque],
   /// then the widgets below are touchable.
   OverlayManagerEntry<T> show<T>({
-    required OverlayBuilder builder,
+    required OverlayBuilder<T> builder,
     bool isDismissible = true,
     OverlayDismiss<T>? onDismiss,
     Color barrierColor = Colors.black45,
