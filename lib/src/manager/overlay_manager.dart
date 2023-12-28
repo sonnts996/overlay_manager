@@ -84,14 +84,14 @@ abstract class _OverlayManager extends OverlayManager {
     OverlayMode mode = OverlayMode.opaque,
     double elevation = 0,
   }) {
-    final _entry = _OverlayManagerEntry<T>(
+    final entry = _OverlayManagerEntry<T>(
         manager: this,
         onDismiss: onDismiss,
         isDismissible: isDismissible,
         elevation: elevation);
-    _entry._overlay = _create<T>(
+    entry._overlay = _create<T>(
       builder: builder,
-      entry: _entry,
+      entry: entry,
       onDismiss: onDismiss,
       isDismissible: isDismissible,
       barrierColor: barrierColor,
@@ -99,8 +99,8 @@ abstract class _OverlayManager extends OverlayManager {
     );
 
     if (_entries.length == 1) {
-      _entries.add(_entry);
-      _overlay.insert(_entry._overlay);
+      _entries.add(entry);
+      _overlay.insert(entry._overlay);
     } else {
       OverlayManagerEntry? above;
       try {
@@ -110,16 +110,16 @@ abstract class _OverlayManager extends OverlayManager {
       }
 
       if (above == null) {
-        _entries.add(_entry);
-        _overlay.insert(_entry._overlay);
+        _entries.add(entry);
+        _overlay.insert(entry._overlay);
       } else {
-        int index = _entries.indexOf(above);
-        _entries.insert(index, _entry);
-        _overlay.insert(_entry._overlay,
+        final index = _entries.indexOf(above);
+        _entries.insert(index, entry);
+        _overlay.insert(entry._overlay,
             above: (above as _OverlayManagerEntry)._overlay);
       }
     }
-    return _entry;
+    return entry;
   }
 
   @override
@@ -139,7 +139,7 @@ abstract class _OverlayManager extends OverlayManager {
     OverlayMode mode = OverlayMode.opaque,
   }) {
     if (mode == OverlayMode.opaque) {
-      void _ignoreTab() {
+      void ignoreTab() {
         //todo: this will skip tab event
       }
       return OverlayEntry(
@@ -151,7 +151,7 @@ abstract class _OverlayManager extends OverlayManager {
           child: Material(
             color: barrierColor,
             child: GestureDetector(
-              onTap: _ignoreTab,
+              onTap: ignoreTab,
               child: builder.call(context, entry),
             ),
           ),
@@ -195,13 +195,12 @@ abstract class _OverlayManager extends OverlayManager {
 /// commonly used for global managers.
 /// Note that each Manager is independent even though it has the same [navigatorKey].
 class GlobalOverlayManager extends _OverlayManager {
+  /// Create a [OverlayManager] with the Navigator key.
   GlobalOverlayManager({required GlobalKey<NavigatorState> navigatorKey})
       : super(navigatorKey: navigatorKey);
 
   @override
-  OverlayState get _overlay {
-    return navigatorKey!.currentState!.overlay!;
-  }
+  OverlayState get _overlay => navigatorKey!.currentState!.overlay!;
 }
 
 ///
@@ -209,11 +208,10 @@ class GlobalOverlayManager extends _OverlayManager {
 /// commonly used for one or a small page group managers.
 /// Note that each Manager is independent even though it has the same [context].
 class ContextOverlayManager extends _OverlayManager {
+  /// Create a [OverlayManager] with the context
   ContextOverlayManager({required BuildContext context})
       : super(context: context);
 
   @override
-  OverlayState get _overlay {
-    return Overlay.of(context!);
-  }
+  OverlayState get _overlay => Overlay.of(context!);
 }

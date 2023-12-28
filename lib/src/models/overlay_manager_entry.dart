@@ -9,7 +9,8 @@ import 'functions.dart';
 ///
 /// Every overlay is provided an [OverlayManagerEntry].
 /// Check the state of overlay by [closed] flag and close it by [close] method.
-abstract class OverlayManagerEntry<T> extends Comparable {
+abstract class OverlayManagerEntry<T> extends Comparable<OverlayManagerEntry> {
+  /// The [OverlayManagerEntry]'s constructor
   OverlayManagerEntry({
     required this.manager,
     this.onDismiss,
@@ -46,10 +47,5 @@ abstract class OverlayManagerEntry<T> extends Comparable {
   void close([T? value]);
 
   @override
-  int compareTo(other) {
-    if (other is OverlayManagerEntry) {
-      return elevation.compareTo(other.elevation);
-    }
-    return 0;
-  }
+  int compareTo(OverlayManagerEntry other) => elevation.compareTo(other.elevation);
 }

@@ -1,6 +1,6 @@
 name: overlay_manager
 description: "Group and manage easily flutter overlays: Create a new overlay, arrange it in z-index order, check, close, and capture the return value when closed."
-version: 0.0.2+1
+version: 0.0.3
 homepage: https://github.com/sonnts996/overlay_manager
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  owlet_lints: ^4.0.0+1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
