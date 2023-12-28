@@ -1,18 +1,24 @@
 # Overlay Manager
 
+[![version](https://img.shields.io/pub/v/overlay_manager)](https://pub.dev/packages/overlay_manager) [![license](https://img.shields.io/github/license/sonnts996/overlay_manager)](https://pub.dev/packages/overlay_manager/license)
+
 Group and manage easily flutter overlays: 
 - Create a new overlay with the barrier options
 - Arrange it in z-index order.
 - Check, close, and capture the return value when closed.
 
+## Getting started
 
-## Import
+```yaml
+dependencies:
+  objectx: '1.0.3'
+```
+
+## Usage
 
 ```dart
 import 'package:overlay_manager/overlay_manager.dart';
 ```
-
-## Create
 
 The ``GlobalOverlayManager`` helps you create and manage your overlay without context:
 
@@ -37,7 +43,7 @@ or uses the ``ContextOverlayManager``:
 final manager = ContextOverlayManager(context: context);
 ```
 
-## Using
+### Show an overlay
 
 - For show an overlay:
 

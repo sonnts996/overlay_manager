@@ -4,18 +4,15 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:overlay_manager/src/models/functions.dart';
-import 'package:overlay_manager/src/models/overlay_mode.dart';
 
+import 'models/functions.dart';
 import 'models/overlay_manager_entry.dart';
+import 'models/overlay_mode.dart';
 
 /// Overlays can be grouped and managed by an OverlayManager.
 // [show]  creates and automatically adds into managers.
 // The Overlay can be closed by [OverlayManagerEntry.close] or automatically closed by [pop], [closeAll].
 abstract class OverlayManager {
-  final GlobalKey<NavigatorState>? navigatorKey;
-
-  final BuildContext? context;
 
   /// OverlayManager can be used with [GlobalKey<NavigatorState>] or [BuildContext].
   /// One and only one in [navigatorKey] or [context] is special.
@@ -23,7 +20,11 @@ abstract class OverlayManager {
     this.navigatorKey,
     this.context,
   }) : assert(navigatorKey != null || (context != null),
-            "Either navigator or overlay should be not null");
+            'Either navigator or overlay should be not null');
+
+  final GlobalKey<NavigatorState>? navigatorKey;
+
+  final BuildContext? context;
 
   // void rearrange(Iterable<OverlayManager> orderedList);
 
@@ -31,7 +32,7 @@ abstract class OverlayManager {
   /// The number of entries in this manager.
   int get count;
 
-  /// Close a special [entry] or [topEntry] with  a [value] for [onDismiss].
+  /// Close a special [entry] or [topEntry] with  a [value] for onDismiss.
   void pop<T>([OverlayManagerEntry? entry, T? value]);
 
   /// Close all entries in this manager.
