@@ -11,7 +11,7 @@ Group and manage easily flutter overlays:
 
 ```yaml
 dependencies:
-  objectx: '1.0.3'
+  overlay_manager: '0.0.3'
 ```
 
 ## Usage
