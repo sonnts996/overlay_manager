@@ -47,5 +47,6 @@ abstract class OverlayManagerEntry<T> extends Comparable<OverlayManagerEntry> {
   void close([T? value]);
 
   @override
-  int compareTo(OverlayManagerEntry other) => elevation.compareTo(other.elevation);
+  int compareTo(OverlayManagerEntry other) =>
+      elevation.compareTo(other.elevation);
 }

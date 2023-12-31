@@ -13,7 +13,6 @@ import 'models/overlay_mode.dart';
 // [show]  creates and automatically adds into managers.
 // The Overlay can be closed by [OverlayManagerEntry.close] or automatically closed by [pop], [closeAll].
 abstract class OverlayManager {
-
   /// OverlayManager can be used with [GlobalKey<NavigatorState>] or [BuildContext].
   /// One and only one in [navigatorKey] or [context] is special.
   const OverlayManager({
