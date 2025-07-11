@@ -191,7 +191,7 @@ abstract class _OverlayManager extends OverlayManager {
 }
 
 ///
-/// Create Manager with GlobalKey<NavigatorState> [navigatorKey],
+/// Create Manager with `GlobalKey<NavigatorState>` [navigatorKey],
 /// commonly used for global managers.
 /// Note that each Manager is independent even though it has the same [navigatorKey].
 class GlobalOverlayManager extends _OverlayManager {

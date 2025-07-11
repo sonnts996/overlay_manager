@@ -16,7 +16,7 @@ initial
 - Optimize code
 - Removed OverlayPopScope (Caused by WillPopScope being deprecated in the later Flutter version (after v3.12.0-1.0.pre).)
 
-# 0.0.3+1
+## 0.0.3+1
 
 - Fix bug when adding a new entry with elevation.
 - Add unit test.
