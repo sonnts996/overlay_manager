@@ -27,10 +27,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> showOverlay(int id) async {
     manager.show(
       mode: OverlayMode.transparent,
-      elevation: -1.0 * id,
+      elevation: id.toDouble(),
       builder: (context, entry) {
         return Bubble(
           id: id,
+          entry: entry,
           moveToTop: () {
             entry.rearrange((manager.topEntry?.elevation ?? 0) + 1);
           },
@@ -65,7 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           builder: (context) => const OverlayPage(),
                         ));
                   },
-                  child: const Text('Local Overlay'))
+                  child: const Text('Local Overlay')),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                  onPressed: () {
+                    manager.closeAll();
+                  },
+                  child: const Text('Clear All')),
             ]),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
@@ -78,9 +85,11 @@ class Bubble extends StatefulWidget {
     Key? key,
     required this.id,
     required this.moveToTop,
+    required this.entry,
   }) : super(key: key);
 
   final int id;
+  final OverlayManagerEntry entry;
   final void Function() moveToTop;
 
   @override
@@ -92,60 +101,73 @@ class Bubble extends StatefulWidget {
 class _BubbleState extends State<Bubble> {
   double width = 100.0, height = 100.0;
   late Offset position;
+  Offset? startPosition;
   late final int _id;
+
+  late final GlobalKey _key;
 
   @override
   void initState() {
     super.initState();
     _id = widget.id;
     position = Offset(0.0, height - 20);
+    _key = GlobalKey();
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: <Widget>[
+      children: [
         Positioned(
           left: position.dx,
-          top: position.dy - height + 20,
-          child: Draggable(
-            child: GestureDetector(
-              onDoubleTap: widget.moveToTop,
-              child: Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black12, blurRadius: 6, spreadRadius: 6)
-                    ]),
-                child: Center(
-                  child: Text("Drag $_id"),
-                ),
-              ),
-            ),
-            feedback: Material(
-              color: Colors.transparent,
-              child: Container(
-                child: Center(
-                  child: Text("Drag $_id"),
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.white38,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black12, blurRadius: 6, spreadRadius: 6)
-                    ]),
-                width: width,
-                height: height,
-              ),
-            ),
-            onDraggableCanceled: (Velocity velocity, Offset offset) {
-              setState(() => position = offset);
+          top: position.dy,
+          child: GestureDetector(
+            onPanDown: (details) {
+              startPosition = details.localPosition;
             },
+            onPanEnd: (details) {
+              startPosition = null;
+            },
+            child: Draggable(
+              key: _key,
+              onDragUpdate: (detail) {
+                final renderBox =
+                    _key.currentContext?.findRenderObject() as RenderBox?;
+                if (renderBox == null) return;
+
+                final adjustPosition =
+                    detail.globalPosition - (startPosition ?? Offset.zero);
+                setState(
+                  () => position = Offset(
+                    adjustPosition.dx,
+                    adjustPosition.dy,
+                  ),
+                );
+              },
+              feedback: const SizedBox(),
+              child: GestureDetector(
+                onDoubleTap: () {
+                  widget.moveToTop();
+                  setState(() {});
+                },
+                child: Container(
+                  width: width,
+                  height: height,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 6,
+                            spreadRadius: 6)
+                      ]),
+                  child: Center(
+                    child: Text("Drag $_id\n${widget.entry.elevation}"),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ],

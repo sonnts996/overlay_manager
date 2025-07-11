@@ -98,25 +98,25 @@ abstract class _OverlayManager extends OverlayManager {
       mode: mode,
     );
 
-    if (_entries.length == 1) {
+    if (_entries.isEmpty) {
       _entries.add(entry);
       _overlay.insert(entry._overlay);
     } else {
-      OverlayManagerEntry? above;
+      OverlayManagerEntry? below;
       try {
-        above = _entries.firstWhere((element) => element.elevation > elevation);
+        below = _entries.firstWhere((element) => element.elevation > elevation);
       } catch (e) {
-        above = null;
+        below = null;
       }
 
-      if (above == null) {
+      if (below == null) {
         _entries.add(entry);
         _overlay.insert(entry._overlay);
       } else {
-        final index = _entries.indexOf(above);
+        final index = _entries.indexOf(below);
         _entries.insert(index, entry);
         _overlay.insert(entry._overlay,
-            above: (above as _OverlayManagerEntry)._overlay);
+            below: (below as _OverlayManagerEntry)._overlay);
       }
     }
     return entry;
